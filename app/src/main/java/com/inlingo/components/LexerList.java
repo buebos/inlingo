@@ -5,15 +5,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.inlingo.contracts.LexerContract;
+import com.inlingo.contracts.ScannerContract;
 import com.inlingo.core.Token;
 import com.inlingo.core.TokenType;
 import com.inlingo.exception.LexicalException;
 
-public class Lexer extends LexerContract {
+public class LexerList extends LexerContract {
     private final ArrayList<TokenType> tokenTypes = new ArrayList<>();
     private final ArrayList<Token> tokens = new ArrayList<>();
+    private int cursor = 0;
 
-    public Lexer() {
+    public LexerList(ScannerContract scanner) throws LexicalException {
+        super(scanner);
+
         // Basic tokens
         tokenTypes.add(new TokenType(TokenType.NUMBER, "-?\\d+(\\.\\d+)?"));
         tokenTypes.add(new TokenType(TokenType.STRING, "\"[^\"]*\""));
@@ -53,13 +57,9 @@ public class Lexer extends LexerContract {
 
         // Error token (catch-all)
         tokenTypes.add(new TokenType(TokenType.ERROR, "[^\\s]+"));
-    }
 
-    public ArrayList<Token> getTokens() {
-        return tokens;
-    }
+        String sourceCode = this.scanner.toString();
 
-    public void analyze(String sourceCode) throws LexicalException {
         StringBuilder patternBuilder = new StringBuilder();
 
         for (TokenType tokenType : tokenTypes) {
@@ -75,24 +75,38 @@ public class Lexer extends LexerContract {
             for (TokenType tokenType : tokenTypes) {
                 String match = matcher.group(tokenType.getName());
 
-                if (match != null) {
-                    if (tokenType.getName().equals(TokenType.WHITESPACE)) {
-                        break;
-                    }
-
-                    if (tokenType.getName().equals(TokenType.ERROR)) {
-                        throw new LexicalException(match);
-                    }
-
-                    String value = match;
-                    if (tokenType.getName().equals(TokenType.STRING)) {
-                        value = value.substring(1, value.length() - 1);
-                    }
-
-                    tokens.add(new Token(tokenType, value));
+                if (match == null) {
+                    continue;
+                }
+                if (tokenType.getName().equals(TokenType.WHITESPACE)) {
                     break;
                 }
+                if (tokenType.getName().equals(TokenType.ERROR)) {
+                    throw new LexicalException(match);
+                }
+
+                String value = match;
+
+                if (tokenType.getName().equals(TokenType.STRING)) {
+                    value = value.substring(1, value.length() - 1);
+                }
+
+                tokens.add(new Token(tokenType, value));
+
+                break;
             }
         }
+    }
+
+    public ArrayList<Token> getTokens() {
+        return tokens;
+    }
+
+    public Token next() {
+        if (this.cursor > tokens.size() - 1) {
+            return null;
+        }
+
+        return tokens.get(this.cursor++);
     }
 }

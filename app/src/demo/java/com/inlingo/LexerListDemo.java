@@ -4,11 +4,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.inlingo.components.Lexer;
+import com.inlingo.components.LexerList;
+import com.inlingo.components.ScannerString;
 import com.inlingo.core.Token;
 import com.inlingo.exception.LexicalException;
 
-public class PhaseAnalysisLexerDemo {
+public class LexerListDemo {
     public static void main(String[] args) throws LexicalException {
         // Test with inline sample code if no file is provided
         if (args.length == 0) {
@@ -58,8 +59,7 @@ public class PhaseAnalysisLexerDemo {
     }
 
     private static void processPseudocode(String sourceCode) throws LexicalException {
-        Lexer lexer = new Lexer();
-        lexer.analyze(sourceCode);
+        LexerList lexer = new LexerList(new ScannerString(sourceCode));
 
         System.out.println("*** Lexical Analysis Results ***");
         System.out.println("Total tokens found: " + lexer.getTokens().size());
