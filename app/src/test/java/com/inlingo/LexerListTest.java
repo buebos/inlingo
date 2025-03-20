@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.inlingo.components.LexerList;
 import com.inlingo.components.ScannerString;
 import com.inlingo.core.Token;
+import com.inlingo.core.TokenType;
 import com.inlingo.exception.LexicalException;
 
 public class LexerListTest {
@@ -153,5 +154,60 @@ public class LexerListTest {
 
         assertEquals(lexer.getTokens().size(), tokenCount,
                 "Number of tokens from next() should match getTokens().size() - 1");
+    }
+
+    @Test
+    void testList() throws LexicalException {
+        LexerList lexer = new LexerList(new ScannerString("[1,2,3,4 , 3, 1, -1]"));
+
+        assertEquals(TokenType.LEFT_SQBRACKET.getName(), lexer.next().getType().getName());
+        assertEquals("[", lexer.current().getValue());
+
+        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
+        assertEquals("1", lexer.current().getValue());
+
+        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
+        assertEquals(",", lexer.current().getValue());
+
+        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
+        assertEquals("2", lexer.current().getValue());
+
+        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
+        assertEquals(",", lexer.current().getValue());
+
+        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
+        assertEquals("3", lexer.current().getValue());
+
+        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
+        assertEquals(",", lexer.current().getValue());
+
+        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
+        assertEquals("4", lexer.current().getValue());
+
+        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
+        assertEquals(",", lexer.current().getValue());
+
+        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
+        assertEquals("3", lexer.current().getValue());
+
+        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
+        assertEquals(",", lexer.current().getValue());
+
+        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
+        assertEquals("1", lexer.current().getValue());
+
+        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
+        assertEquals(",", lexer.current().getValue());
+
+        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
+        assertEquals("-1", lexer.current().getValue());
+
+        assertEquals(TokenType.RIGHT_SQBRACKET.getName(), lexer.next().getType().getName());
+        assertEquals("]", lexer.current().getValue());
+
+        /** There should not be more tokens present */
+        assertNull(lexer.next());
+        assertNull(lexer.next());
+        assertNull(lexer.next());
     }
 }

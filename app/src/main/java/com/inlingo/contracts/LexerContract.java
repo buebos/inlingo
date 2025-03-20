@@ -10,4 +10,6 @@ public abstract class LexerContract {
     }
 
     public abstract Token next();
+
+    public abstract Token current();
 }

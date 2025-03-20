@@ -11,88 +11,50 @@ import com.inlingo.core.TokenType;
 import com.inlingo.exception.LexicalException;
 
 public class LexerList extends LexerContract {
-    private final ArrayList<TokenType> tokenTypes = new ArrayList<>();
     private final ArrayList<Token> tokens = new ArrayList<>();
-    private int cursor = 0;
+    private int cursor = -1;
 
     public LexerList(ScannerContract scanner) throws LexicalException {
         super(scanner);
 
-        // Basic tokens
-        tokenTypes.add(new TokenType(TokenType.NUMBER, "-?\\d+(\\.\\d+)?"));
-        tokenTypes.add(new TokenType(TokenType.STRING, "\"[^\"]*\""));
-        tokenTypes.add(new TokenType(TokenType.ARITHMETIC_OP, "[+*/\\-]"));
-        tokenTypes.add(new TokenType(TokenType.RELATIONAL_OP, "<=|>=|==|<|>|!="));
-        tokenTypes.add(new TokenType(TokenType.ASSIGNMENT, "="));
-        tokenTypes.add(new TokenType(TokenType.COMMA, ","));
-        tokenTypes.add(new TokenType(TokenType.LEFT_PAREN, "\\("));
-        tokenTypes.add(new TokenType(TokenType.RIGHT_PAREN, "\\)"));
-
-        // Program structure tokens
-        tokenTypes.add(new TokenType(TokenType.PROGRAM_START, "begin\\s+program"));
-        tokenTypes.add(new TokenType(TokenType.PROGRAM_END, "end\\s+program"));
-
-        // I/O tokens
-        tokenTypes.add(new TokenType(TokenType.READ, "read"));
-        tokenTypes.add(new TokenType(TokenType.WRITE, "write"));
-
-        // Control flow tokens
-        tokenTypes.add(new TokenType(TokenType.IF, "if"));
-        tokenTypes.add(new TokenType(TokenType.THEN, "then"));
-        tokenTypes.add(new TokenType(TokenType.ENDIF, "end\\s+if"));
-        tokenTypes.add(new TokenType(TokenType.WHILE, "while"));
-        tokenTypes.add(new TokenType(TokenType.ENDWHILE, "end\\s+while"));
-
-        // Variable declaration tokens
-        tokenTypes.add(new TokenType(TokenType.VARIABLES, "variables"));
-        tokenTypes.add(new TokenType(TokenType.COLON, ":"));
-
-        // Repeat statement tokens
-        tokenTypes.add(new TokenType(TokenType.REPEAT, "repeat"));
-        tokenTypes.add(new TokenType(TokenType.ENDREPEAT, "end\\s+repeat"));
-
-        // Identifier and whitespace tokens
-        tokenTypes.add(new TokenType(TokenType.IDENTIFIER, "[a-zA-Z_][a-zA-Z0-9_]*"));
-        tokenTypes.add(new TokenType(TokenType.WHITESPACE, "\\s+"));
-
-        // Error token (catch-all)
-        tokenTypes.add(new TokenType(TokenType.ERROR, "[^\\s]+"));
-
         String sourceCode = this.scanner.toString();
-
         StringBuilder patternBuilder = new StringBuilder();
 
-        for (TokenType tokenType : tokenTypes) {
+        for (TokenType tokenType : TokenType.values()) {
             patternBuilder.append(String.format("|(?<%s>%s)", tokenType.getName(), tokenType.getPattern()));
         }
 
-        String pattern = patternBuilder.substring(1);
+        String pattern = patternBuilder.substring(1); // Remove the first '|' character
 
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(sourceCode);
 
         while (matcher.find()) {
-            for (TokenType tokenType : tokenTypes) {
+            for (TokenType tokenType : TokenType.values()) {
                 String match = matcher.group(tokenType.getName());
 
                 if (match == null) {
                     continue;
                 }
-                if (tokenType.getName().equals(TokenType.WHITESPACE)) {
+
+                // Skip whitespace tokens
+                if (tokenType == TokenType.WHITESPACE) {
                     break;
                 }
-                if (tokenType.getName().equals(TokenType.ERROR)) {
+
+                // Throw exception for error tokens
+                if (tokenType == TokenType.ERROR) {
                     throw new LexicalException(match);
                 }
 
                 String value = match;
 
-                if (tokenType.getName().equals(TokenType.STRING)) {
+                // Remove quotes from string literals
+                if (tokenType == TokenType.STRING) {
                     value = value.substring(1, value.length() - 1);
                 }
 
                 tokens.add(new Token(tokenType, value));
-
                 break;
             }
         }
@@ -102,11 +64,21 @@ public class LexerList extends LexerContract {
         return tokens;
     }
 
+    @Override
     public Token next() {
-        if (this.cursor > tokens.size() - 1) {
+        if (this.cursor + 1 > tokens.size() - 1) {
             return null;
         }
 
-        return tokens.get(this.cursor++);
+        return this.tokens.get(++this.cursor);
+    }
+
+    @Override
+    public Token current() {
+        if (this.cursor < 0 || this.cursor > tokens.size() - 1) {
+            return null;
+        }
+
+        return this.tokens.get(this.cursor);
     }
 }

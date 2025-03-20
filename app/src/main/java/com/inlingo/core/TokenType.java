@@ -1,46 +1,76 @@
 package com.inlingo.core;
 
-public class TokenType {
+/**
+ * Enum representing different types of tokens in the language.
+ * Each token type has a name and a regex pattern for lexical analysis.
+ */
+public enum TokenType {
+    NUMBER("NUMBER", "-?\\d+(\\.\\d+)?"),
+    STRING("STRING", "\"[^\"]*\""),
+    ARITHMETIC_OP("ARITHMETICOP", "[+*/\\-]"),
+    RELATIONAL_OP("RELATIONALOP", "<=|>=|==|<|>|!="),
+    ASSIGNMENT("ASSIGNMENT", "="),
+    COMMA("COMMA", ","),
+    LEFT_PAREN("LEFTPAREN", "\\("),
+    RIGHT_PAREN("RIGHTPAREN", "\\)"),
+    LEFT_SQBRACKET("LEFTSQUAREBRACKET", "\\["),
+    RIGHT_SQBRACKET("RIGHTSQUAREBRACKET", "\\]"),
+    PROGRAM_START("PROGRAMSTART", "begin\\s+program"),
+    PROGRAM_END("PROGRAMEND", "end\\s+program"),
+    READ("READ", "read"),
+    WRITE("WRITE", "write"),
+    IF("IF", "if"),
+    THEN("THEN", "then"),
+    ENDIF("ENDIF", "end\\s+if"),
+    WHILE("WHILE", "while"),
+    ENDWHILE("ENDWHILE", "end\\s+while"),
+    VARIABLES("VARIABLES", "variables"),
+    COLON("COLON", ":"),
+    REPEAT("REPEAT", "repeat"),
+    ENDREPEAT("ENDREPEAT", "end\\s+repeat"),
+    IDENTIFIER("IDENTIFIER", "[a-zA-Z_][a-zA-Z0-9_]*"),
+    WHITESPACE("WHITESPACE", "\\s+"),
+    ERROR("ERROR", "[^\\s]+");
+
     private final String name;
     private final String pattern;
 
-    public TokenType(String name, String pattern) {
+    /**
+     * Constructor for TokenType enum.
+     *
+     * @param name    The string representation of the token type
+     * @param pattern The regex pattern to match this token type
+     */
+    TokenType(String name, String pattern) {
         this.name = name;
         this.pattern = pattern;
     }
 
+    /**
+     * Gets the string representation of the token type.
+     *
+     * @return The name of the token type
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the regex pattern for this token type.
+     *
+     * @return The regex pattern string
+     */
     public String getPattern() {
         return pattern;
     }
 
-    public static final String NUMBER = "NUMBER";
-    public static final String STRING = "STRING";
-    public static final String ARITHMETIC_OP = "ARITHMETICOP";
-    public static final String RELATIONAL_OP = "RELATIONALOP";
-    public static final String ASSIGNMENT = "ASSIGNMENT";
-    public static final String COMMA = "COMMA";
-    public static final String LEFT_PAREN = "LEFTPAREN";
-    public static final String RIGHT_PAREN = "RIGHTPAREN";
-    public static final String PROGRAM_START = "PROGRAMSTART";
-    public static final String PROGRAM_END = "PROGRAMEND";
-    public static final String READ = "READ";
-    public static final String WRITE = "WRITE";
-    public static final String IF = "IF";
-    public static final String THEN = "THEN";
-    public static final String ENDIF = "ENDIF";
-    public static final String WHILE = "WHILE";
-    public static final String ENDWHILE = "ENDWHILE";
-    public static final String IDENTIFIER = "IDENTIFIER";
-    public static final String WHITESPACE = "WHITESPACE";
-    public static final String ERROR = "ERROR";
-
-    public static final String VARIABLES = "VARIABLES";
-    public static final String COLON = "COLON";
-
-    public static final String REPEAT = "REPEAT";
-    public static final String ENDREPEAT = "ENDREPEAT";
+    /**
+     * Returns the string representation of the token type.
+     *
+     * @return The name of the token type
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
 }
