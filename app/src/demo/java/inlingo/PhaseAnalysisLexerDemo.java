@@ -24,29 +24,30 @@ public class PhaseAnalysisLexerDemo {
         System.out.println("*** Running test with sample pseudocode ***\n");
 
         // Sample pseudocode that tests all the lexer features
-        String sampleCode = "begin program\n" +
-                "variables: count, sum, i, value\n" +
-                "\n" +
-                "read count\n" +
-                "sum = 0\n" +
-                "i = 0\n" +
-                "\n" +
-                "while (i < count)\n" +
-                "    read value\n" +
-                "    sum = sum + value\n" +
-                "    i = i + 1\n" +
-                "end while\n" +
-                "\n" +
-                "if sum > 100 then\n" +
-                "    write \"Sum is large: \", sum\n" +
-                "end if\n" +
-                "\n" +
-                "repeat (i, 1, 5)\n" +
-                "    write \"Count: \", i\n" +
-                "end repeat\n" +
-                "\n" +
-                "write \"The average is: \", sum / count\n" +
-                "end program";
+        String sampleCode = """
+                begin program
+                variables: count, sum, i, value
+
+                read count
+                sum = 0
+                i = 0
+
+                while (i < count)
+                    read value
+                    sum = sum + value
+                    i = i + 1
+                end while
+
+                if sum > 100 then
+                    write "Sum is large: ", sum
+                end if
+
+                repeat (i, 1, 5)
+                    write "Count: ", i
+                end repeat
+
+                write "The average is: ", sum / count
+                end program""";
 
         System.out.println("Sample Pseudocode:");
         System.out.println("------------------");

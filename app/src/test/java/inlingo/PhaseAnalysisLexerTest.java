@@ -1,13 +1,12 @@
 package inlingo;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import inlingo.core.Token;
@@ -17,12 +16,13 @@ import inlingo.phase.analysis.LexicalException;
 public class PhaseAnalysisLexerTest {
     @Test
     void testValidTokenization() throws LexicalException {
-        String sourceCode = "begin program\n" +
-                "variables: count, sum, i, value\n" +
-                "read count\n" +
-                "sum = 0\n" +
-                "i = 0\n" +
-                "end program";
+        String sourceCode = """
+                begin program
+                variables: count, sum, i, value
+                read count
+                sum = 0
+                i = 0
+                end program""";
 
         Lexer lexer = new Lexer();
         lexer.analyze(sourceCode);

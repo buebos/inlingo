@@ -3,11 +3,13 @@ package inlingo.phase.analysis;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import inlingo.core.*;
+
+import inlingo.core.Token;
+import inlingo.core.TokenType;
 
 public class Lexer {
-    private ArrayList<TokenType> tokenTypes = new ArrayList<>();
-    private ArrayList<Token> tokens = new ArrayList<>();
+    private final ArrayList<TokenType> tokenTypes = new ArrayList<>();
+    private final ArrayList<Token> tokens = new ArrayList<>();
 
     public Lexer() {
         // Basic tokens

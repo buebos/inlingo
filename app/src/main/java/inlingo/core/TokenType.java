@@ -1,8 +1,8 @@
 package inlingo.core;
 
 public class TokenType {
-    private String name;
-    private String pattern;
+    private final String name;
+    private final String pattern;
 
     public TokenType(String name, String pattern) {
         this.name = name;
