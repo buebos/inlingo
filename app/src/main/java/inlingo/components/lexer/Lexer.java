@@ -1,4 +1,4 @@
-package inlingo.phase.analysis;
+package inlingo.components.lexer;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import inlingo.core.Token;
 import inlingo.core.TokenType;
+import inlingo.exception.LexicalException;
 
 public class Lexer {
     private final ArrayList<TokenType> tokenTypes = new ArrayList<>();

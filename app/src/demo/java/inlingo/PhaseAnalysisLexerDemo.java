@@ -4,9 +4,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import inlingo.components.lexer.Lexer;
 import inlingo.core.Token;
-import inlingo.phase.analysis.Lexer;
-import inlingo.phase.analysis.LexicalException;
+import inlingo.exception.LexicalException;
 
 public class PhaseAnalysisLexerDemo {
     public static void main(String[] args) throws LexicalException {

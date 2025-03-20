@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
+import inlingo.components.lexer.Lexer;
 import inlingo.core.Token;
-import inlingo.phase.analysis.Lexer;
-import inlingo.phase.analysis.LexicalException;
+import inlingo.exception.LexicalException;
 
 public class PhaseAnalysisLexerTest {
     @Test

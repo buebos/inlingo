@@ -1,4 +1,4 @@
-package inlingo.phase.analysis;
+package inlingo.exception;
 
 public class LexicalException extends Exception {
     public LexicalException(String token) {
