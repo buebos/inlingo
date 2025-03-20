@@ -1,4 +1,4 @@
-package inlingo.core;
+package com.inlingo.core;
 
 public class Token {
     private final TokenType type;

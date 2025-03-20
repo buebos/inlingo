@@ -1,4 +1,4 @@
-package inlingo.exception;
+package com.inlingo.exception;
 
 public class LexicalException extends Exception {
     public LexicalException(String token) {

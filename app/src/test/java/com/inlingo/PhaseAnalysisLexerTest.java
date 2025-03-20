@@ -1,4 +1,4 @@
-package inlingo;
+package com.inlingo;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
-import inlingo.components.lexer.Lexer;
-import inlingo.core.Token;
-import inlingo.exception.LexicalException;
+import com.inlingo.components.Lexer;
+import com.inlingo.core.Token;
+import com.inlingo.exception.LexicalException;
 
 public class PhaseAnalysisLexerTest {
     @Test

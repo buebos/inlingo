@@ -42,7 +42,7 @@ java {
 }
 
 application {
-    mainClass = 'inlingo.App'
+    mainClass = 'com.inlingo.Main'
 }
 
 tasks.named('test') {
@@ -55,7 +55,7 @@ tasks.register('demo', JavaExec) {
 
     classpath = sourceSets.demo.runtimeClasspath
 
-    def demoClass = project.findProperty('demoClass') ? 'inlingo.' + project.getProperty('demoClass') : 'inlingo.MainDemo'
+    def demoClass = project.findProperty('demoClass') ? 'com.inlingo.' + project.getProperty('demoClass') : 'com.inlingo.MainDemo'
     
     mainClass= demoClass 
 }

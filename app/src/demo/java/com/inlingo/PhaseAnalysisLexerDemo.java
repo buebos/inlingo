@@ -1,12 +1,12 @@
-package inlingo;
+package com.inlingo;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import inlingo.components.lexer.Lexer;
-import inlingo.core.Token;
-import inlingo.exception.LexicalException;
+import com.inlingo.components.Lexer;
+import com.inlingo.core.Token;
+import com.inlingo.exception.LexicalException;
 
 public class PhaseAnalysisLexerDemo {
     public static void main(String[] args) throws LexicalException {

@@ -1,14 +1,15 @@
-package inlingo.components.lexer;
+package com.inlingo.components;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import inlingo.core.Token;
-import inlingo.core.TokenType;
-import inlingo.exception.LexicalException;
+import com.inlingo.contracts.LexerContract;
+import com.inlingo.core.Token;
+import com.inlingo.core.TokenType;
+import com.inlingo.exception.LexicalException;
 
-public class Lexer {
+public class Lexer extends LexerContract {
     private final ArrayList<TokenType> tokenTypes = new ArrayList<>();
     private final ArrayList<Token> tokens = new ArrayList<>();
 
