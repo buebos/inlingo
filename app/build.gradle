@@ -45,8 +45,17 @@ application {
     mainClass = 'com.inlingo.Main'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+
+    maxHeapSize = '1G'
+
+    testLogging {
+        events("skipped", "failed")
+        exceptionFormat = "full"
+
+        info.events = ["failed", "skipped"]
+    }
 }
 
 tasks.register('demo', JavaExec) {

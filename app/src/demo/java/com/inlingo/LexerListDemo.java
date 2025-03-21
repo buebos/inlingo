@@ -11,11 +11,9 @@ import com.inlingo.exception.LexicalException;
 
 public class LexerListDemo {
     public static void main(String[] args) throws LexicalException {
-        // Test with inline sample code if no file is provided
         if (args.length == 0) {
             testWithSampleCode();
         } else {
-            // Use file from command line argument
             String sourceCode = readProgramFile(args[0]);
             processPseudocode(sourceCode);
         }
