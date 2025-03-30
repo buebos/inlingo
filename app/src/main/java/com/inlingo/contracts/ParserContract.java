@@ -19,6 +19,8 @@ public abstract class ParserContract {
      */
     public ParserContract(LexerContract lexer) throws LexicalException {
         this.lexer = lexer;
+
+        lexer.next();
     }
 
     public abstract void parse() throws LexicalException, ParserException;
