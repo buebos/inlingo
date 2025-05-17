@@ -1,4 +1,4 @@
-package com.inlingo;
+package com.inlingo.components;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,13 +21,13 @@ import com.inlingo.exception.LexicalException;
 public class LexerListTest {
     @Test
     void testValidTokenization() throws LexicalException {
-        LexerList lexer = new LexerList(new ScannerString("""
+        LexerList lexer = new LexerList("""
                 begin program
                 variables: count, sum, i, value
                 read count
                 sum = 0
                 i = 0
-                end program"""));
+                end program""");
         List<Token> tokens = lexer.getTokens();
 
         assertNotNull(tokens, "Token list should not be null");
@@ -38,7 +38,7 @@ public class LexerListTest {
     @Test
     void testTokenTypes() throws LexicalException {
         String sourceCode = "if sum > 100 then write \"Result: \" sum end if";
-        LexerList lexer = new LexerList(new ScannerString(sourceCode));
+        LexerList lexer = new LexerList(sourceCode);
         List<Token> tokens = lexer.getTokens();
 
         assertEquals("IF", tokens.get(0).getType().getName(), "Expected IF token");
@@ -53,14 +53,14 @@ public class LexerListTest {
         String invalidSourceCode = "@invalid_token";
 
         Exception exception = assertThrows(LexicalException.class,
-                () -> new LexerList(new ScannerString(invalidSourceCode)));
+                () -> new LexerList(invalidSourceCode));
         assertTrue(exception.getMessage().contains("Invalid token"), "Exception should mention invalid token");
     }
 
     @Test
     void testEmptyInput() throws LexicalException {
         String emptySourceCode = "";
-        LexerList lexer = new LexerList(new ScannerString(emptySourceCode));
+        LexerList lexer = new LexerList(emptySourceCode);
         List<Token> tokens = lexer.getTokens();
 
         assertTrue(tokens.isEmpty(), "Token list should be empty for empty input");
@@ -70,7 +70,7 @@ public class LexerListTest {
     void testNextReturnsTokensInOrder() throws LexicalException {
         // Create a simple program
         String sourceCode = "begin program variables: x, y end program";
-        LexerList lexer = new LexerList(new ScannerString(sourceCode));
+        LexerList lexer = new LexerList(sourceCode);
 
         // First token should be "begin program"
         Token token1 = lexer.next();
@@ -99,7 +99,7 @@ public class LexerListTest {
     void testNextCursorIncrement() throws LexicalException {
         // Test that the cursor increments properly
         String sourceCode = "a = 42";
-        LexerList lexer = new LexerList(new ScannerString(sourceCode));
+        LexerList lexer = new LexerList(sourceCode);
 
         // Call next() multiple times and verify different tokens are returned
         Token token1 = lexer.next();
@@ -119,7 +119,7 @@ public class LexerListTest {
     void testNextReturnsNullWhenExhausted() throws LexicalException {
         // Test that null is returned when all tokens have been consumed
         String sourceCode = "x = 10";
-        LexerList lexer = new LexerList(new ScannerString(sourceCode));
+        LexerList lexer = new LexerList(sourceCode);
 
         // Consume all tokens
         lexer.next(); // x
@@ -135,7 +135,7 @@ public class LexerListTest {
     void testNextWithEmptySource() throws LexicalException {
         // Test next() with empty source code
         String emptySourceCode = "";
-        LexerList lexer = new LexerList(new ScannerString(emptySourceCode));
+        LexerList lexer = new LexerList(emptySourceCode);
 
         Token token = lexer.next();
         assertNull(token, "next() should return null for empty source code");
@@ -144,7 +144,7 @@ public class LexerListTest {
     @Test
     void testIteration() throws LexicalException {
         String sourceCode = "begin program\nx = 10\nend program";
-        LexerList lexer = new LexerList(new ScannerString(sourceCode));
+        LexerList lexer = new LexerList(sourceCode);
 
         int tokenCount = 0;
 
@@ -158,52 +158,67 @@ public class LexerListTest {
 
     @Test
     void testList() throws LexicalException {
-        LexerList lexer = new LexerList(new ScannerString("[1,2,3,4 , 3, 1, -1]"));
+        LexerList lexer = new LexerList("[1,2,3,4 , 3, 1, -1]");
 
-        assertEquals(TokenType.LEFT_SQBRACKET.getName(), lexer.next().getType().getName());
-        assertEquals("[", lexer.current().getValue());
+        Token token = lexer.next();
+        assertEquals(TokenType.LEFT_SQBRACKET.getName(), token.getType().getName());
+        assertEquals("[", token.getValue());
 
-        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
-        assertEquals("1", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.NUMBER.getName(), token.getType().getName());
+        assertEquals("1", token.getValue());
 
-        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
-        assertEquals(",", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.COMMA.getName(), token.getType().getName());
+        assertEquals(",", token.getValue());
 
-        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
-        assertEquals("2", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.NUMBER.getName(), token.getType().getName());
+        assertEquals("2", token.getValue());
 
-        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
-        assertEquals(",", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.COMMA.getName(), token.getType().getName());
+        assertEquals(",", token.getValue());
 
-        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
-        assertEquals("3", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.NUMBER.getName(), token.getType().getName());
+        assertEquals("3", token.getValue());
 
-        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
-        assertEquals(",", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.COMMA.getName(), token.getType().getName());
+        assertEquals(",", token.getValue());
 
-        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
-        assertEquals("4", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.NUMBER.getName(), token.getType().getName());
+        assertEquals("4", token.getValue());
 
-        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
-        assertEquals(",", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.COMMA.getName(), token.getType().getName());
+        assertEquals(",", token.getValue());
 
-        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
-        assertEquals("3", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.NUMBER.getName(), token.getType().getName());
+        assertEquals("3", token.getValue());
 
-        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
-        assertEquals(",", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.COMMA.getName(), token.getType().getName());
+        assertEquals(",", token.getValue());
 
-        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
-        assertEquals("1", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.NUMBER.getName(), token.getType().getName());
+        assertEquals("1", token.getValue());
 
-        assertEquals(TokenType.COMMA.getName(), lexer.next().getType().getName());
-        assertEquals(",", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.COMMA.getName(), token.getType().getName());
+        assertEquals(",", token.getValue());
 
-        assertEquals(TokenType.NUMBER.getName(), lexer.next().getType().getName());
-        assertEquals("-1", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.NUMBER.getName(), token.getType().getName());
+        assertEquals("-1", token.getValue());
 
-        assertEquals(TokenType.RIGHT_SQBRACKET.getName(), lexer.next().getType().getName());
-        assertEquals("]", lexer.current().getValue());
+        token = lexer.next();
+        assertEquals(TokenType.RIGHT_SQBRACKET.getName(), token.getType().getName());
+        assertEquals("]", token.getValue());
 
         /** There should not be more tokens present */
         assertNull(lexer.next());

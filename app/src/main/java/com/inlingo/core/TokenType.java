@@ -1,49 +1,95 @@
 package com.inlingo.core;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+
 /**
  * Enum representing different types of tokens in the language.
  * Each token type has a name and a regex pattern for lexical analysis.
  */
 public enum TokenType {
-    NUMBER("NUMBER", "-?\\d+(\\.\\d+)?"),
-    STRING("STRING", "\"[^\"]*\""),
-    ARITHMETIC_OP("ARITHMETICOP", "[+*/\\-]"),
-    RELATIONAL_OP("RELATIONALOP", "<=|>=|==|<|>|!="),
-    ASSIGNMENT("ASSIGNMENT", "="),
-    COMMA("COMMA", ","),
-    LEFT_PAREN("LEFTPAREN", "\\("),
-    RIGHT_PAREN("RIGHTPAREN", "\\)"),
-    LEFT_SQBRACKET("LEFTSQUAREBRACKET", "\\["),
-    RIGHT_SQBRACKET("RIGHTSQUAREBRACKET", "\\]"),
-    PROGRAM_START("PROGRAMSTART", "begin\\s+program"),
-    PROGRAM_END("PROGRAMEND", "end\\s+program"),
-    READ("READ", "read"),
-    WRITE("WRITE", "write"),
-    IF("IF", "if"),
-    THEN("THEN", "then"),
-    ENDIF("ENDIF", "end\\s+if"),
-    WHILE("WHILE", "while"),
-    ENDWHILE("ENDWHILE", "end\\s+while"),
-    VARIABLES("VARIABLES", "variables"),
-    COLON("COLON", ":"),
-    REPEAT("REPEAT", "repeat"),
-    ENDREPEAT("ENDREPEAT", "end\\s+repeat"),
-    IDENTIFIER("IDENTIFIER", "[a-zA-Z_][a-zA-Z0-9_]*"),
-    WHITESPACE("WHITESPACE", "\\s+"),
-    ERROR("ERROR", "[^\\s]+");
+    // Keywords
+    IF("if"),
+    ELSE("else"),
+    END_IF("end if"),
+    WHILE("while"),
+    END_WHILE("end while"),
+    REPEAT("repeat"),
+    END_REPEAT("end repeat"),
+    READ("read"),
+    WRITE("write"),
+    PROGRAMSTART("begin program"),
+    PROGRAMEND("end program"),
+    VARIABLES("variables"),
+    THEN("then"),
+    FROM("from"),
+    TO("to"),
+    DO("do"),
 
-    private final String name;
-    private final String pattern;
+    // Operators
+    ARITHMETIC_OP("+", "-", "*", "/"),
+    RELATIONALOP("==", "!=", "<", "<=", ">", ">="),
+    LOGICAL_OP("and", "or", "not"),
+    OPERATOR("&", "|"),
 
-    /**
-     * Constructor for TokenType enum.
-     *
-     * @param name    The string representation of the token type
-     * @param pattern The regex pattern to match this token type
-     */
-    TokenType(String name, String pattern) {
-        this.name = name;
-        this.pattern = pattern;
+    // Punctuation
+    LEFT_PAREN("("),
+    RIGHT_PAREN(")"),
+    LEFT_SQBRACKET("["),
+    RIGHT_SQBRACKET("]"),
+    COMMA(","),
+    COLON(":"),
+    SEMICOLON(";"),
+    ASSIGNMENT("="),
+
+    // Literals
+    NUMBER,
+    STRING,
+    BOOLEAN,
+
+    // Special
+    IDENTIFIER,
+    EOF;
+
+    private final List<String> values;
+    public static final Map<String, TokenType> keywords = new HashMap<>();
+
+    static {
+        keywords.put("if", IF);
+        keywords.put("else", ELSE);
+        keywords.put("end if", END_IF);
+        keywords.put("while", WHILE);
+        keywords.put("end while", END_WHILE);
+        keywords.put("repeat", REPEAT);
+        keywords.put("end repeat", END_REPEAT);
+        keywords.put("read", READ);
+        keywords.put("write", WRITE);
+        keywords.put("true", BOOLEAN);
+        keywords.put("false", BOOLEAN);
+        keywords.put("begin program", PROGRAMSTART);
+        keywords.put("end program", PROGRAMEND);
+        keywords.put("variables", VARIABLES);
+        keywords.put("then", THEN);
+        keywords.put("end while", END_WHILE);
+        keywords.put("if", IF);
+        keywords.put("then", THEN);
+        keywords.put("end if", END_IF);
+        keywords.put("repeat", REPEAT);
+        keywords.put("end repeat", END_REPEAT);
+        keywords.put("from", FROM);
+        keywords.put("to", TO);
+        keywords.put("do", DO);
+    }
+
+    TokenType(String... values) {
+        this.values = values.length > 0 ? Arrays.asList(values) : new ArrayList<>();
+    }
+
+    public List<String> getValues() {
+        return values;
     }
 
     /**
@@ -52,7 +98,7 @@ public enum TokenType {
      * @return The name of the token type
      */
     public String getName() {
-        return name;
+        return name();
     }
 
     /**
@@ -61,7 +107,7 @@ public enum TokenType {
      * @return The regex pattern string
      */
     public String getPattern() {
-        return pattern;
+        return values.get(0);
     }
 
     /**
@@ -71,6 +117,6 @@ public enum TokenType {
      */
     @Override
     public String toString() {
-        return name;
+        return name();
     }
 }

@@ -1,64 +1,37 @@
 package com.inlingo;
 
-import com.inlingo.contracts.Scope;
+import com.inlingo.core.SymbolTable;
 
 public class SymbolTableDemo {
     public static void main(String[] args) {
-        Scope currentScope;
+        SymbolTable symbolTable = new SymbolTable();
 
-        currentScope = new GlobalScope();
+        // Define variables
+        symbolTable.define("x", 42);
+        symbolTable.define("y", 3.14);
+        symbolTable.define("name", "Alice");
+        symbolTable.define("flag", true);
 
-        currentScope.define(new BuiltInTypeSymbol("int"));
-        currentScope.define(new BuiltInTypeSymbol("float"));
-        currentScope.define(new BuiltInTypeSymbol("void"));
+        // Print initial values
+        System.out.println("x = " + symbolTable.get("x"));
+        System.out.println("y = " + symbolTable.get("y"));
+        System.out.println("name = " + symbolTable.get("name"));
+        System.out.println("flag = " + symbolTable.get("flag"));
 
-        StructSymbol ss = new StructSymbol("A", currentScope);
-        currentScope.define(ss);
-        currentScope = ss;
+        // Set new values
+        symbolTable.set("x", 100);
+        symbolTable.set("y", 2.718);
+        symbolTable.set("name", "Bob");
+        symbolTable.set("flag", false);
 
-        BuiltInTypeSymbol t = (BuiltInTypeSymbol) currentScope.resolve("int");
-        if (t == null) {
-            throw new RuntimeException("Tipo 'int' no encontrado");
-        }
-        currentScope.define(new VariableSymbol("x", t));
+        // Print updated values
+        System.out.println("Updated x = " + symbolTable.get("x"));
+        System.out.println("Updated y = " + symbolTable.get("y"));
+        System.out.println("Updated name = " + symbolTable.get("name"));
+        System.out.println("Updated flag = " + symbolTable.get("flag"));
 
-        t = (BuiltInTypeSymbol) currentScope.resolve("float");
-        if (t == null) {
-            throw new RuntimeException("Tipo 'float' no encontrado");
-        }
-        currentScope.define(new VariableSymbol("y", t));
-
-        currentScope = currentScope.getEnclosingScope();
-
-        BuiltInTypeSymbol rt = (BuiltInTypeSymbol) currentScope.resolve("void");
-        if (rt == null) {
-            throw new RuntimeException("Tipo 'void' no encontrado");
-        }
-
-        MethodSymbol m = new MethodSymbol("f", rt, currentScope);
-        currentScope.define(m);
-
-        currentScope = m;
-
-        currentScope = new LocalScope(currentScope);
-
-        ss = (StructSymbol) currentScope.resolve("A");
-        if (ss == null) {
-            throw new RuntimeException("Struct 'A' no encontrado");
-        }
-        currentScope.define(new VariableSymbol("a", ss));
-
-        VariableSymbol v = (VariableSymbol) currentScope.resolve("a");
-        if (v == null) {
-            throw new RuntimeException("Variable 'a' no encontrada");
-        }
-        ss = (StructSymbol) v.type;
-        v = (VariableSymbol) ss.resolveMember("x");
-        if (v == null) {
-            throw new RuntimeException("Campo 'x' no encontrado en struct 'A'");
-        }
-
-        currentScope = currentScope.getEnclosingScope();
-        currentScope = currentScope.getEnclosingScope();
+        // Check existence
+        System.out.println("Has x? " + symbolTable.has("x"));
+        System.out.println("Has z? " + symbolTable.has("z"));
     }
 }

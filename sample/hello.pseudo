@@ -1,0 +1,3 @@
+begin program
+    write "hello world!"
+end program
