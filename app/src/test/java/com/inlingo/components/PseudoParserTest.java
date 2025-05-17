@@ -1,16 +1,16 @@
-package com.inlingo;
+package com.inlingo.components;
 
 import org.junit.jupiter.api.Test;
 
 import com.inlingo.components.LexerList;
 import com.inlingo.components.PseudoParser;
-import com.inlingo.components.ScannerString;
+import com.inlingo.core.SymbolTable;
 import com.inlingo.exception.LexicalException;
 import com.inlingo.exception.ParserException;
 
 public class PseudoParserTest {
     @Test
-    public void test() throws ParserException, LexicalException {
+    public void test() throws LexicalException, ParserException {
         String input = """
                 begin program
                   variables: count, sum, i, value
@@ -36,8 +36,9 @@ public class PseudoParserTest {
                   write "The average is: ", sum / count
                 end program
                 """;
-        LexerList lexer = new LexerList(new ScannerString(input));
-        PseudoParser parser = new PseudoParser(lexer);
+        LexerList lexer = new LexerList(input);
+        SymbolTable symbolTable = new SymbolTable();
+        PseudoParser parser = new PseudoParser(lexer, symbolTable);
 
         parser.parse();
     }

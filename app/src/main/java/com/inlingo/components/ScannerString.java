@@ -1,26 +1,19 @@
 package com.inlingo.components;
 
-import com.inlingo.contracts.ScannerContract;
+import java.util.Scanner;
 
-public class ScannerString extends ScannerContract {
-    private String source;
-    private int cursor = 0;
+public class ScannerString {
+    private final Scanner scanner;
 
-    public ScannerString(String source) {
-        this.source = source;
+    public ScannerString(String input) {
+        this.scanner = new Scanner(input);
     }
 
-    @Override
-    public String toString() {
-        return this.source;
+    public boolean hasNext() {
+        return scanner.hasNext();
     }
 
-    @Override
-    public char next() {
-        if (cursor >= source.length()) {
-            return '\0';
-        }
-
-        return source.charAt(cursor++);
+    public String next() {
+        return scanner.next();
     }
 }

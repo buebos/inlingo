@@ -3,6 +3,7 @@ package com.inlingo;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.inlingo.components.LexerList;
 import com.inlingo.components.ScannerString;
@@ -57,7 +58,7 @@ public class LexerListDemo {
     }
 
     private static void processPseudocode(String sourceCode) throws LexicalException {
-        LexerList lexer = new LexerList(new ScannerString(sourceCode));
+        LexerList lexer = new LexerList(sourceCode);
 
         System.out.println("*** Lexical Analysis Results ***");
         System.out.println("Total tokens found: " + lexer.getTokens().size());
@@ -74,7 +75,7 @@ public class LexerListDemo {
         printTokenStatistics(lexer.getTokens());
     }
 
-    private static void printTokenStatistics(ArrayList<Token> tokens) {
+    private static void printTokenStatistics(List<Token> tokens) {
         // Count occurrences of each token type
         java.util.Map<String, Integer> statistics = new java.util.HashMap<>();
 
